@@ -866,7 +866,7 @@ end
 ---
 --- This is where we deduce the optimal spell rank for the /pfquickcast:heal* family of commands
 ---
-function SmartHealer:pfUIQuickCast_OnHeal(spell, spellId, spellBookType, proper_target, intention_is_focus_cast, future_arg1, future_arg2, future_arg3, future_arg4, future_arg5)
+function SmartHealer:pfUIQuickCast_OnHeal(spell, spell_id, spell_book_type, proper_target, intention_is_focus_cast, is_instant_cast, future_arg1, future_arg2, future_arg3, future_arg4, future_arg5)
     local spellNameRaw, explicitlySpecifiedRank = libSC:GetRanklessSpellName(spell)
 
     local rankedSpell, rankedSpellId, rankedSpellBookType = self:tryGetOptimalSpell(
@@ -877,10 +877,11 @@ function SmartHealer:pfUIQuickCast_OnHeal(spell, spellId, spellBookType, proper_
 
     _pfUIQuickCast_OnHeal_orig(
             rankedSpell or spell,
-            rankedSpellId or spellId,
-            rankedSpellBookType or spellBookType,
+            rankedSpellId or spell_id,
+            rankedSpellBookType or spell_book_type,
             proper_target,
             intention_is_focus_cast,
+            is_instant_cast,
             future_arg1, -- just to be sure we wont miss
             future_arg2, -- out on any future arguments
             future_arg3, -- we can set explicit names for
