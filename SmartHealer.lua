@@ -580,9 +580,9 @@ end
 -------------------------------------------------------------------------------
 -- Function selects optimal spell rank to cast based on unit's missing HP
 -------------------------------------------------------------------------------
--- spell	- spell name to cast ("Healing Wave")
--- unit	 	- unitId ("player", "target", ...)
--- overheal	- overheal multiplier. If nil, then using self.db.account.overheal.
+-- spell	                - spell name to cast ("Healing Wave")
+-- unit	 	                - unitId ("player", "target", ...)
+-- possibleExplicitOverheal	- overheal multiplier. If nil, then using self.db.account.overheal.
 -------------------------------------------------------------------------------
 function SmartHealer:GetOptimalRank(spell, unit, possibleExplicitOverheal)
     if not libSC.data[spell] then
