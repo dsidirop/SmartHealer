@@ -459,6 +459,11 @@ function strmatch(str, pat, init)
     return a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a13, a14, a15, a16, a17, a18, a19, a20
 end
 
+-- BATTLEGROUNDS
+local ARATHI_BASIN = L["Arathi Basin"]
+local WARSONG_GULCH = L["Warsong Gulch"]
+local ALTERAC_VALLEY = L["Alterac Valley"]
+
 -- PRIESTS
 local HEAL = L["Heal"]
 local RENEW = L["Renew"]
@@ -1444,7 +1449,7 @@ end
 
 function HealComm:SendAddonMessage(msg)
 	local zone = GetRealZoneText()
-	if zone == L["Warsong Gulch"] or zone == L["Arathi Basin"] or zone == L["Alterac Valley"] then
+	if zone == WARSONG_GULCH or zone == ARATHI_BASIN or zone == ALTERAC_VALLEY then
 		SendAddonMessage("HealComm", msg, "BATTLEGROUND")
 	else
 		SendAddonMessage("HealComm", msg, "RAID")
