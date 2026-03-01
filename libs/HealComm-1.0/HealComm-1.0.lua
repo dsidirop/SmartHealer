@@ -1206,8 +1206,7 @@ HealComm.Debuffs = {
 	
 local function getSetBonus()
 	healcommTip:SetInventoryItem("player", 1)
-	local text = "healcommTipTextLeft"..(healcommTip:NumLines() or 1)
-	local text = getglobal(text)
+	local text = getglobal("healcommTipTextLeft"..(healcommTip:NumLines() or 1))
 	if text then
 		text = text:GetText()
 	else
@@ -1311,7 +1310,7 @@ end
 function HealComm:UNIT_HEALTH()
 	local name = UnitName(arg1)
 	if self.pendingResurrections[name] then
-		for k,v in pairs(self.pendingResurrections[name]) do
+		for k,_ in pairs(self.pendingResurrections[name]) do
 			self.pendingResurrections[name][k] = nil
 		end
 		self:TriggerEvent("HealComm_Ressupdate", name)
@@ -1416,13 +1415,13 @@ function HealComm:SendAddonMessage(msg)
 end
 
 function HealComm:SPELLCAST_START(spell,cast_time)
-	local spell = spell or arg1
-	local cast_time = cast_time or arg2
+	spell = spell or arg1
+	cast_time = cast_time or arg2
 	if ( self.SpellCastInfo and self.SpellCastInfo[1] == spell and self.Spells[spell] ) then
 		local Bonus = itemBonus:GetBonus("HEAL")
 		local buffpower, buffmod = self:GetBuffSpellPower()
 		local targetpower, targetmod = self.SpellCastInfo[4], self.SpellCastInfo[5]
-		local Bonus = Bonus + buffpower
+		Bonus = Bonus + buffpower
 		local amount = ((math.floor(self.Spells[self.SpellCastInfo[1]][tonumber(self.SpellCastInfo[2])](Bonus))+targetpower)*buffmod*targetmod)
 		if spell == L["Prayer of Healing"] then
 			local targets = {UnitName("player")}
@@ -1751,9 +1750,9 @@ function HealComm:CastSpellByName(spellName, onSelf)
 	end
 
 	if (self.CurrentSpellName and not SpellIsTargeting()) or (GetCVar("AutoSelfCast") == "0" and onSelf ~= 1 and not SpellIsTargeting() and not (UnitExists("target") and UnitCanAssist("player", "target"))) then return end
-	
-	local _,_,rank = string.find(spellName,"(%d+)")
-	local _, _, spellName = string.find(spellName, "^([^%(]+)")
+
+    local _, _, rank = string.find(spellName, "(%d+)")
+	_, _, spellName = string.find(spellName, "^([^%(]+)")
 	spellName = string.lower(spellName)
 	local i = 1
 	while GetSpellName(i, BOOKTYPE_SPELL) do
