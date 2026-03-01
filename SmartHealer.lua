@@ -794,6 +794,11 @@ function SmartHealer:getIntendedTargetForPFCastSpell()
 end
 
 function SmartHealer:pfUI_PFCast(msg)
+    if type(msg) ~= "string" or string.len(msg) == 0 then
+        self.hooks[SlashCmdList]["PFCAST"](msg) -- fallback if the message is a func or invalid
+        return
+    end
+    
     local spell, maxDesiredRank = libSC:GetRanklessSpellName(msg)
     if spell and maxDesiredRank == nil and libHC.Spells[spell] then
         local unitstr = self:getIntendedTargetForPFCastSpell()
