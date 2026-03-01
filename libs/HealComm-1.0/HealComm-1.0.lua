@@ -50,6 +50,7 @@ L:RegisterTranslations("enUS", function() return {
 	["Resurrection"] = true;
 	["Rebirth"] = true;
 	["Redemption"] = true;
+	["Revive Champion"] = true;
 	["Ancestral Spirit"] = true;
 	["Renew"] = true;
 	["Rejuvenation"] = true;
@@ -105,6 +106,7 @@ L:RegisterTranslations("ruRU", function() return {
 	["Resurrection"] = "Воскрешение",
 	["Rebirth"] = "Возрождение",
 	["Redemption"] = "Искупление",
+	["Revive Champion"] = "Воскрешение поборника", -- note: translation hasn't been tested in practice in twow
 	["Ancestral Spirit"] = "Дух предков",
 	["Renew"] = "Обновление",
 	["Rejuvenation"] = "Омоложение",
@@ -160,6 +162,7 @@ L:RegisterTranslations("deDE", function() return {
 	["Resurrection"] = "Auferstehung",
 	["Rebirth"] = "Wiedergeburt",
 	["Redemption"] = "Erl\195\182sung",
+	["Revive Champion"] = "Recken wiederbeleben", -- note: translation hasn't been tested in practice in twow
 	["Ancestral Spirit"] = "Geist der Ahnen",
 	["Renew"] = "Erneuerung",
 	["Rejuvenation"] = "Verj\195\188ngung",
@@ -215,6 +218,7 @@ L:RegisterTranslations("frFR", function() return {
 	["Resurrection"] = "R\195\169surrection",
 	["Rebirth"] = "Renaissance",
 	["Redemption"] = "R\195\169demption",
+	["Revive Champion"] = "Ranimer un champion", -- note: translation hasn't been tested in practice in twow
 	["Ancestral Spirit"] = "Esprit ancestral",
 	["Renew"] = "R\195\169novation",
 	["Rejuvenation"] = "R\195\169cup\195\169ration",
@@ -270,6 +274,7 @@ L:RegisterTranslations("zhCN", function() return {
 	["Resurrection"] = "复活",
 	["Rebirth"] = "复生",
 	["Redemption"] = "救赎",
+	["Revive Champion"] = "复活勇士", -- note: translation hasn't been tested in practice in twow
 	["Ancestral Spirit"] = "先祖之魂",
 	["Renew"] = "恢复",
 	["Rejuvenation"] = "回春术",
@@ -325,6 +330,7 @@ L:RegisterTranslations("koKR", function() return {
 	["Resurrection"] = "부활",
 	["Rebirth"] = "환생",
 	["Redemption"] = "구원",
+	["Revive Champion"] = "용사 되살리기", -- note: translation hasn't been tested in practice in twow
 	["Ancestral Spirit"] = "고대의 영혼",
 	["Renew"] = "소생",
 	["Rejuvenation"] = "회복",
@@ -1135,9 +1141,10 @@ HealComm.Spells = {
 }
 
 local Resurrections = {
-	[L["Resurrection"]] = true;
 	[L["Rebirth"]] = true;
 	[L["Redemption"]] = true;
+	[L["Resurrection"]] = true;
+    [L["Revive Champion"]] = true; -- twow special priest bres spell
 	[L["Ancestral Spirit"]] = true;
 }
 
