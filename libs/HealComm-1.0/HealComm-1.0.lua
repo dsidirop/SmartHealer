@@ -1818,7 +1818,15 @@ function HealComm:CastSpellByName(spellName, onSelf)
 		return
 	end
 
-	if (self.CurrentSpellName and not SpellIsTargeting()) or (GetCVar("AutoSelfCast") == "0" and onSelf ~= 1 and not SpellIsTargeting() and not (UnitExists("target") and UnitCanAssist("player", "target"))) then return end
+    if (self.CurrentSpellName and not SpellIsTargeting())
+            or (
+            onSelf ~= 1
+                    and GetCVar("AutoSelfCast") == "0" 
+                    and not SpellIsTargeting()
+                    and not (UnitExists("target") and UnitCanAssist("player", "target"))
+    ) then
+        return
+    end
 
     local _, _, rank = string.find(spellName, "(%d+)")
 	_, _, spellName = string.find(spellName, "^([^%(]+)")
