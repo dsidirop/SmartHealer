@@ -1449,11 +1449,12 @@ end
 
 function HealComm:SendAddonMessage(msg)
 	local zone = GetRealZoneText()
-	if zone == WARSONG_GULCH or zone == ARATHI_BASIN or zone == ALTERAC_VALLEY then
-		SendAddonMessage("HealComm", msg, "BATTLEGROUND")
-	else
-		SendAddonMessage("HealComm", msg, "RAID")
-	end
+
+    local properChannel = (zone == WARSONG_GULCH or zone == ARATHI_BASIN or zone == ALTERAC_VALLEY)
+            and "BATTLEGROUND"
+            or "RAID"
+
+    SendAddonMessage("HealComm", msg, properChannel)
 end
 
 function HealComm:SPELLCAST_START(spell,cast_time)
