@@ -8,7 +8,7 @@ Dependencies: AceLibrary, AceEvent-2.0, RosterLib-2.0, ItemBonusLib-1.0
 ]]
 
 local MAJOR_VERSION = "HealComm-1.0"
-local MINOR_VERSION = "$Revision: 11732 $"
+local MINOR_VERSION = "$Revision: 14732 $"
 
 if not AceLibrary then error(MAJOR_VERSION .. " requires AceLibrary") end
 if not AceLibrary:IsNewVersion(MAJOR_VERSION, MINOR_VERSION) then return end
@@ -21,7 +21,8 @@ local roster = AceLibrary("RosterLib-2.0")
 local itemBonus = AceLibrary("ItemBonusLib-1.0")
 local L = AceLibrary("AceLocale-2.2"):new("HealComm-1.0")
 local HealComm = {}
-
+local has_superwow = SetAutoloot and true or false
+local player_guid
 ------------------------------------------------
 -- Locales
 ------------------------------------------------
@@ -397,11 +398,15 @@ local function external(self, major, instance)
 	if major == "AceEvent-2.0" then
 		local AceEvent = instance
 		AceEvent:embed(self)
-		self:RegisterEvent("SPELLCAST_START")
+		if has_superwow then
+			self:RegisterEvent("UNIT_CASTEVENT")
+		else
+			self:RegisterEvent("SPELLCAST_START")
+			self:RegisterEvent("SPELLCAST_STOP")
+		end
 		self:RegisterEvent("SPELLCAST_INTERRUPTED")
 		self:RegisterEvent("SPELLCAST_FAILED")
 		self:RegisterEvent("SPELLCAST_DELAYED")
-		self:RegisterEvent("SPELLCAST_STOP")
 		self:RegisterEvent("CHAT_MSG_ADDON")
 		self:RegisterEvent("UNIT_AURA")
 		self:RegisterEvent("UNIT_HEALTH")
@@ -416,12 +421,18 @@ end
 
 function HealComm:PLAYER_LOGIN()
 	self:HookScript(WorldFrame, "OnMouseDown", "OnMouseDown")
-	self:Hook("CastSpell")
-	self:Hook("CastSpellByName")
-	self:Hook("UseAction")
+	if not has_superwow then
+		self:Hook("CastSpell")
+		self:Hook("CastSpellByName")
+		self:Hook("UseAction")
+	end
 	self:Hook("SpellTargetUnit")
 	self:Hook("SpellStopTargeting")
 	self:Hook("TargetUnit")
+
+	if has_superwow then
+		_,player_guid = UnitExists("player")
+	end
 end
 
 function HealComm:Enable()
@@ -1064,6 +1075,63 @@ HealComm.Spells = {
 			return ((1062*gnMod)+(((2/3.5)*SpellPower)*0.5))
 		end;
 	};
+	[L["Rejuvenation"]] = {
+		[1] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((32*gnMod)+(((2/3.5)*SpellPower)*0.5*0.38))
+		end;
+		[2] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((56*gnMod)+(((2/3.5)*SpellPower)*0.5*0.513))
+		end;
+		[3] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((120*gnMod)+(((2/3.5)*SpellPower)*0.5))
+		end;
+		[4] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((184*gnMod)+(((2/3.5)*SpellPower)*0.5))
+		end;
+		[5] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((252*gnMod)+(((2/3.5)*SpellPower)*0.5))
+		end;
+		[6] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((316*gnMod)+(((2/3.5)*SpellPower)*0.5))
+		end;
+		[7] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((400*gnMod)+(((2/3.5)*SpellPower)*0.5))
+		end;
+		[8] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((504*gnMod)+(((2/3.5)*SpellPower)*0.5))
+		end;
+		[9] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((632*gnMod)+(((2/3.5)*SpellPower)*0.5))
+		end;
+		[10] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((784*gnMod)+(((2/3.5)*SpellPower)*0.5))
+		end;
+		[11] = function (SpellPower)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
+			local gnMod = 2*talentRank/100 + 1
+			return ((888*gnMod)+(((2/3.5)*SpellPower)*0.5))
+		end;
+	};
 }
 
 local Resurrections = {
@@ -1213,6 +1281,26 @@ function HealComm:GetUnitSpellPower(unit, spell)
 	return targetpower, targetmod
 end			
 
+function HealComm:UNIT_CASTEVENT(caster,target,action,spell_id,cast_time)
+	if caster ~= player_guid then return end
+	if action == "MAINHAND" or action == "OFFHAND" then return end
+
+	local spellName, rank = SpellInfo(spell_id)
+	_,_,rank = string.find(rank,"(%d+)")
+
+	if not (self.Spells[spellName] or Resurrections[spellName] or Hots[spellName]) then return end
+
+	self.CurrentSpellName = spellName
+	self.CurrentSpellRank = rank
+	self:ProcessSpellCast(target)
+
+	if action == "START" then
+		self:SPELLCAST_START(spellName,cast_time)
+	elseif action== "CAST" then
+		self:SPELLCAST_STOP()
+	end
+end
+
 function HealComm:UNIT_HEALTH()
 	local name = UnitName(arg1)
 	if self.pendingResurrections[name] then
@@ -1222,7 +1310,7 @@ function HealComm:UNIT_HEALTH()
 		self:TriggerEvent("HealComm_Ressupdate", name)
 	end
 end
-			
+
 function HealComm:stopHeal(caster)
 	if self:IsEventScheduled("Healcomm_"..caster) then
 		self:CancelScheduledEvent("Healcomm_"..caster)
@@ -1320,14 +1408,16 @@ function HealComm:SendAddonMessage(msg)
 	end
 end
 
-function HealComm:SPELLCAST_START()
-	if ( self.SpellCastInfo and self.SpellCastInfo[1] == arg1 and self.Spells[arg1] ) then
+function HealComm:SPELLCAST_START(spell,cast_time)
+	local spell = spell or arg1
+	local cast_time = cast_time or arg2
+	if ( self.SpellCastInfo and self.SpellCastInfo[1] == spell and self.Spells[spell] ) then
 		local Bonus = itemBonus:GetBonus("HEAL")
 		local buffpower, buffmod = self:GetBuffSpellPower()
 		local targetpower, targetmod = self.SpellCastInfo[4], self.SpellCastInfo[5]
 		local Bonus = Bonus + buffpower
 		local amount = ((math.floor(self.Spells[self.SpellCastInfo[1]][tonumber(self.SpellCastInfo[2])](Bonus))+targetpower)*buffmod*targetmod)
-		if arg1 == L["Prayer of Healing"] then
+		if spell == L["Prayer of Healing"] then
 			local targets = {UnitName("player")}
 			local targetsstring = UnitName("player").."/"
 			for i=1,4 do
@@ -1336,17 +1426,17 @@ function HealComm:SPELLCAST_START()
 					targetsstring = targetsstring..UnitName("party"..i).."/"
 				end
 			end
-			self:SendAddonMessage("GrpHeal/"..amount.."/"..arg2.."/"..targetsstring)
-			self:startGrpHeal(UnitName("player"), amount, arg2, targets[1], targets[2], targets[3], targets[4], targets[5])
+			self:SendAddonMessage("GrpHeal/"..amount.."/"..cast_time.."/"..targetsstring)
+			self:startGrpHeal(UnitName("player"), amount, cast_time, targets[1], targets[2], targets[3], targets[4], targets[5])
 		else
-			self:SendAddonMessage("Heal/"..self.SpellCastInfo[3].."/"..amount.."/"..arg2.."/")
-			self:startHeal(UnitName("player"), self.SpellCastInfo[3], amount, arg2)
+			self:SendAddonMessage("Heal/"..self.SpellCastInfo[3].."/"..amount.."/"..cast_time.."/")
+			self:startHeal(UnitName("player"), self.SpellCastInfo[3], amount, cast_time)
 		end
-	elseif ( self.SpellCastInfo and self.SpellCastInfo[1] == arg1 and Resurrections[arg1] ) then
+	elseif ( self.SpellCastInfo and self.SpellCastInfo[1] == spell and Resurrections[spell] ) then
 		self:SendAddonMessage("Resurrection/"..self.SpellCastInfo[3].."/start/")
 		self:startResurrection(UnitName("player"), self.SpellCastInfo[3])
 	end
-	self.spellIsCasting = arg1
+	self.spellIsCasting = spell
 end
 
 function HealComm:SPELLCAST_INTERRUPTED()
@@ -1652,7 +1742,7 @@ function HealComm:CastSpellByName(spellName, onSelf)
 		self.failed = nil
 		return
 	end
-	
+
 	if (self.CurrentSpellName and not SpellIsTargeting()) or (GetCVar("AutoSelfCast") == "0" and onSelf ~= 1 and not SpellIsTargeting() and not (UnitExists("target") and UnitCanAssist("player", "target"))) then return end
 	
 	local _,_,rank = string.find(spellName,"(%d+)")
@@ -1780,7 +1870,7 @@ function HealComm:ProcessSpellCast(unit)
 	local power, mod = self:GetUnitSpellPower(unit, self.CurrentSpellName)
 	self.SpellCastInfo[1] = (self.SpellCastInfo[1] or self.CurrentSpellName)
 	self.SpellCastInfo[2] = (self.SpellCastInfo[2] or self.CurrentSpellRank)
-	self.SpellCastInfo[3] = (self.SpellCastInfo[3] or UnitName(unit))
+	self.SpellCastInfo[3] = (self.SpellCastInfo[3] or (unit and UnitName(unit) or "Unknown"))
 	self.SpellCastInfo[4] = (self.SpellCastInfo[4] or power)
 	self.SpellCastInfo[5] = (self.SpellCastInfo[5] or mod)
 end

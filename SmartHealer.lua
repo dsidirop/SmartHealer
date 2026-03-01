@@ -228,7 +228,7 @@ function SmartHealer:CastHeal(spellName)
         end
     end
 
-    -- self:Print("spellname: ", spellName)
+    --self:Print("spellname: ", spellName)
 
     CastSpellByName(spellName, onSelf)
 
@@ -377,6 +377,8 @@ function SmartHealer:ConfigureOverhealing(categoryName, overheal)
 
     self.db.account.categories[categoryName].overheal = overheal
 end
+
+local maxBuffs = 32;
 
 function SmartHealer:GetDefaultOverhealing()
     return self.db.account.overheal + _sessionOverhealingDelta
@@ -585,11 +587,10 @@ end
 -- possibleExplicitOverheal	- overheal multiplier. If nil, then using self.db.account.overheal.
 -------------------------------------------------------------------------------
 function SmartHealer:GetOptimalRank(spell, unit, possibleExplicitOverheal)
-    if not libSC.data[spell] then
-        self:Print(" [ERROR] Smartheal rank not found for spell '", spell, "'")
+    if libSC.data[spell] == nil then
+        self:Print("[ERROR] Smartheal spell-registry doesn't contain spell '", spell, "'")
         return
     end
-
     local bonus, power, mod
     if TheoryCraft == nil then
         bonus = tonumber(libIB:GetBonus("HEAL"))
@@ -622,21 +623,36 @@ function SmartHealer:GetOptimalRank(spell, unit, possibleExplicitOverheal)
                 rank = i > 1 and i - 1 or 1
             end
         else
-            local heal = (libHC.Spells[spell][i](bonus) + power) * mod
-            if heal > (missing * overheal) then
-                rank = i
+            if libHC.Spells[spell] and libHC.Spells[spell][i] then
+                local heal = (libHC.Spells[spell][i](bonus) + power) * mod -- This is line 184
+                if heal > (missing * overheal) then
+                    rank = i
+                else
+                    break
+                end
             else
+                -- If we get here, it means the library is missing data for this spell.
+                -- We can't continue, so we break out of the loop.
+                self:Print("Warning: libHC missing data for " .. spell .. " Rank " .. i)
                 break
             end
         end
     end
-    --[[
-    self:Print(spell
-            .. ' rank ' .. rank
-            .. ' hp ' .. math.floor(spellData.averagehealnocrit)
-            .. ' hpm ' .. (spellData.averagehealnocrit / spellData.manacost)
-            .. ' mana ' .. spellData.manacost )
-    ]]
+	
+	-- Why does this API have no logical way to check if you have a specific buff?
+	index = 1
+	while (index <= maxBuffs) do
+		bIndex, _ = GetPlayerBuff(index, "HELPFUL|PASSIVE");
+		icon = GetPlayerBuffTexture(bIndex);
+		if (icon ~= nil) then
+			-- I hate this. This is the icon Clearcasting uses.
+			if (icon == "Interface\\Icons\\Spell_Shadow_ManaBurn") then
+				rank = max_rank
+			end
+		end
+		index = index + 1
+	end
+	
     return rank
 end
 
