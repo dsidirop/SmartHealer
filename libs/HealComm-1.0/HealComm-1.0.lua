@@ -455,12 +455,49 @@ end
 ------------------------------------------------
 
 function strmatch(str, pat, init)
-	local a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a13,a14,a15,a16,a17,a18,a19,a20 = string.find(str, pat, init)
-	return a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a13,a14,a15,a16,a17,a18,a19,a20
+    local _, _, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, _, a14, a15, a16, a17, a18, a19, a20 = string.find(str, pat, init)
+    return a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a13, a14, a15, a16, a17, a18, a19, a20
 end
 
+-- PRIESTS
+local HEAL = L["Heal"]
+local RENEW = L["Renew"]
+local FLASH_HEAL = L["Flash Heal"]
+local LESSER_HEAL = L["Lesser Heal"]
+local GREATER_HEAL = L["Greater Heal"]
+local PRAYER_OF_HEALING = L["Prayer of Healing"]
+
+-- PALADINS
+local HOLY_LIGHT = L["Holy Light"]
+local FLASH_OF_LIGHT = L["Flash of Light"]
+
+local LIBRAM_OF_LIGHT = L["Libram of Light"]
+local BLESSING_OF_LIGHT = L["Blessing of Light"]
+local LIBRAM_OF_DIVINITY = L["Libram of Divinity"]
+
+-- SHAMANS
+local CHAIN_HEAL = L["Chain Heal"]
+local HEALING_WAVE = L["Healing Wave"]
+local LESSER_HEALING_WAVE = L["Lesser Healing Wave"]
+
+local HEALING_WAY = L["Healing Way"]
+local TOTEM_OF_LIFE = L["Totem of Life"]
+local TOTEM_OF_SUSTAINING = L["Totem of Sustaining"]
+
+-- DRUIDS
+local REGROWTH = L["Regrowth"]
+local REJUVENATION = L["Rejuvenation"]
+local HEALING_TOUCH = L["Healing Touch"]
+
+-- RESURRECTION SPELLS
+local REBIRTH = L["Rebirth"]
+local REDEMPTION = L["Redemption"]
+local RESURRECTION = L["Resurrection"]
+local REVIVE_CHAMPION = L["Revive Champion"]
+local ANCESTRAL_SPIRIT = L["Ancestral Spirit"]
+
 HealComm.Spells = {
-	[L["Holy Light"]] = {
+	[HOLY_LIGHT] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
 			local hlMod = 4*talentRank/100 + 1
@@ -507,15 +544,15 @@ HealComm.Spells = {
 			return (1681*hlMod+((2.5/3.5) * SpellPower))
 		end;
 	};
-	[L["Flash of Light"]] = {
+	[FLASH_OF_LIGHT] = {
 		[1] = function (SpellPower)
 			local lp = 0
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == 	L["Libram of Divinity"] then
+				if name == 	LIBRAM_OF_DIVINITY then
 					lp = 53
-				elseif name == L["Libram of Light"] then
+				elseif name == LIBRAM_OF_LIGHT then
 					lp = 83
 				end
 			end
@@ -528,9 +565,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == 	L["Libram of Divinity"] then
+				if name == 	LIBRAM_OF_DIVINITY then
 					lp = 53
-				elseif name == L["Libram of Light"] then
+				elseif name == LIBRAM_OF_LIGHT then
 					lp = 83
 				end
 			end
@@ -543,9 +580,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == 	L["Libram of Divinity"] then
+				if name == 	LIBRAM_OF_DIVINITY then
 					lp = 53
-				elseif name == L["Libram of Light"] then
+				elseif name == LIBRAM_OF_LIGHT then
 					lp = 83
 				end
 			end
@@ -558,9 +595,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == 	L["Libram of Divinity"] then
+				if name == 	LIBRAM_OF_DIVINITY then
 					lp = 53
-				elseif name == L["Libram of Light"] then
+				elseif name == LIBRAM_OF_LIGHT then
 					lp = 83
 				end
 			end
@@ -573,9 +610,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == 	L["Libram of Divinity"] then
+				if name == 	LIBRAM_OF_DIVINITY then
 					lp = 53
-				elseif name == L["Libram of Light"] then
+				elseif name == LIBRAM_OF_LIGHT then
 					lp = 83
 				end
 			end
@@ -588,9 +625,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == 	L["Libram of Divinity"] then
+				if name == 	LIBRAM_OF_DIVINITY then
 					lp = 53
-				elseif name == L["Libram of Light"] then
+				elseif name == LIBRAM_OF_LIGHT then
 					lp = 83
 				end
 			end
@@ -603,9 +640,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == 	L["Libram of Divinity"] then
+				if name == 	LIBRAM_OF_DIVINITY then
 					lp = 53
-				elseif name == L["Libram of Light"] then
+				elseif name == LIBRAM_OF_LIGHT then
 					lp = 83
 				end
 			end
@@ -614,7 +651,7 @@ HealComm.Spells = {
 			return (481*hlMod+lp+((1.5/3.5) * SpellPower))
 		end;
 	};
-	[L["Healing Wave"]] = {
+	[HEALING_WAVE] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
 			local pMod = 2*talentRank/100 + 1
@@ -666,15 +703,15 @@ HealComm.Spells = {
 			return (1736*pMod+((3/3.5) * SpellPower))
 		end;
 	};
-	[L["Lesser Healing Wave"]] = {
+	[LESSER_HEALING_WAVE] = {
 		[1] = function (SpellPower)
 			local tp = 0
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == L["Totem of Sustaining"] then
+				if name == TOTEM_OF_SUSTAINING then
 					tp = 53
-				elseif name == L["Totem of Life"] then
+				elseif name == TOTEM_OF_LIFE then
 					tp = 80
 				end
 			end
@@ -687,9 +724,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == L["Totem of Sustaining"] then
+				if name == TOTEM_OF_SUSTAINING then
 					tp = 53
-				elseif name == L["Totem of Life"] then
+				elseif name == TOTEM_OF_LIFE then
 					tp = 80
 				end
 			end
@@ -702,9 +739,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == L["Totem of Sustaining"] then
+				if name == TOTEM_OF_SUSTAINING then
 					tp = 53
-				elseif name == L["Totem of Life"] then
+				elseif name == TOTEM_OF_LIFE then
 					tp = 80
 				end
 			end
@@ -717,9 +754,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == L["Totem of Sustaining"] then
+				if name == TOTEM_OF_SUSTAINING then
 					tp = 53
-				elseif name == L["Totem of Life"] then
+				elseif name == TOTEM_OF_LIFE then
 					tp = 80
 				end
 			end
@@ -732,9 +769,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == L["Totem of Sustaining"] then
+				if name == TOTEM_OF_SUSTAINING then
 					tp = 53
-				elseif name == L["Totem of Life"] then
+				elseif name == TOTEM_OF_LIFE then
 					tp = 80
 				end
 			end
@@ -747,9 +784,9 @@ HealComm.Spells = {
 			if GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")) then
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
-				if name == L["Totem of Sustaining"] then
+				if name == TOTEM_OF_SUSTAINING then
 					tp = 53
-				elseif name == L["Totem of Life"] then
+				elseif name == TOTEM_OF_LIFE then
 					tp = 80
 				end
 			end
@@ -758,7 +795,7 @@ HealComm.Spells = {
 			return (881*pMod+tp+((1.5/3.5) * SpellPower))
 		end;
 	};
-	[L["Chain Heal"]] = {
+	[CHAIN_HEAL] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
 			local pMod = 2*talentRank/100 + 1
@@ -775,7 +812,7 @@ HealComm.Spells = {
 			return (591*pMod+((2.5/3.5) * SpellPower))
 		end;
 	};
-	[L["Lesser Heal"]] = {
+	[LESSER_HEAL] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(2,14)
 			local _,Spirit,_,_ = UnitStat("player",5)
@@ -801,7 +838,7 @@ HealComm.Spells = {
 			return (147*shMod+((2.5/3.5) * (SpellPower+sgMod))*0.6)
 		end;
 	};
-	[L["Heal"]] = {
+	[HEAL] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(2,14)
 			local _,Spirit,_,_ = UnitStat("player",5)
@@ -835,7 +872,7 @@ HealComm.Spells = {
 			return (759*shMod+((3/3.5) * (SpellPower+sgMod)))
 		end;
 	};
-	[L["Flash Heal"]] = {
+	[FLASH_HEAL] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(2,14)
 			local _,Spirit,_,_ = UnitStat("player",5)
@@ -893,7 +930,7 @@ HealComm.Spells = {
 			return (886*shMod+((1.5/3.5) * (SpellPower+sgMod)))
 		end;
 	};
-	[L["Greater Heal"]] = {
+	[GREATER_HEAL] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(2,14)
 			local _,Spirit,_,_ = UnitStat("player",5)
@@ -935,7 +972,7 @@ HealComm.Spells = {
 			return (2081*shMod+((3/3.5) * (SpellPower+sgMod)))
 		end;
 	};
-	[L["Prayer of Healing"]] = {
+	[PRAYER_OF_HEALING] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(2,14)
 			local _,Spirit,_,_ = UnitStat("player",5)
@@ -977,7 +1014,7 @@ HealComm.Spells = {
 			return (1070*shMod+((3/3.5/3) * (SpellPower+sgMod)))
 		end;
 	};
-	[L["Healing Touch"]] = {
+	[HEALING_TOUCH] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
 			local gnMod = 2*talentRank/100 + 1
@@ -1034,7 +1071,7 @@ HealComm.Spells = {
 			return ((2473*gnMod)+SpellPower)
 		end;
 	};
-	[L["Regrowth"]] = {
+	[REGROWTH] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
 			local gnMod = 2*talentRank/100 + 1
@@ -1081,7 +1118,7 @@ HealComm.Spells = {
 			return ((1062*gnMod)+(((2/3.5)*SpellPower)*0.5))
 		end;
 	};
-	[L["Rejuvenation"]] = {
+	[REJUVENATION] = {
 		[1] = function (SpellPower)
 			local _,_,_,_,talentRank,_ = GetTalentInfo(3,12)
 			local gnMod = 2*talentRank/100 + 1
@@ -1141,16 +1178,16 @@ HealComm.Spells = {
 }
 
 local Resurrections = {
-	[L["Rebirth"]] = true;
-	[L["Redemption"]] = true;
-	[L["Resurrection"]] = true;
-    [L["Revive Champion"]] = true; -- twow special priest bres spell
-	[L["Ancestral Spirit"]] = true;
+	[REBIRTH] = true;
+	[REDEMPTION] = true;
+	[RESURRECTION] = true;
+    [REVIVE_CHAMPION] = true; -- twow special priest bres spell
+	[ANCESTRAL_SPIRIT] = true;
 }
 
 local Hots = {
-	[L["Renew"]] = true;
-	[L["Rejuvenation"]] = true;
+	[RENEW] = true;
+	[REJUVENATION] = true;
 }
 
 local function strsplit(pString, pPattern)
@@ -1255,15 +1292,15 @@ function HealComm:GetUnitSpellPower(unit, spell)
 			break
 		end
 		buffName = healcommTipTextLeft1:GetText()
-		if buffName == L["Blessing of Light"] then
+		if buffName == BLESSING_OF_LIGHT then
 			local HLBonus, FoLBonus = strmatch(healcommTipTextLeft2:GetText(),"(%d+).-(%d+)")
-			if (spell == L["Flash of Light"]) then
+			if (spell == FLASH_OF_LIGHT) then
 				targetpower = FoLBonus + targetpower
-			elseif spell == L["Holy Light"] then
+			elseif spell == HOLY_LIGHT then
 				targetpower = HLBonus + targetpower
 			end
 		end
-		if buffName == L["Healing Way"] and spell == L["Healing Wave"] then
+		if buffName == HEALING_WAY and spell == HEALING_WAVE then
 			targetmod = targetmod * ((buffApplications * 0.06) + 1)
 		end
 	end
@@ -1423,7 +1460,7 @@ function HealComm:SPELLCAST_START(spell,cast_time)
 		local targetpower, targetmod = self.SpellCastInfo[4], self.SpellCastInfo[5]
 		Bonus = Bonus + buffpower
 		local amount = ((math.floor(self.Spells[self.SpellCastInfo[1]][tonumber(self.SpellCastInfo[2])](Bonus))+targetpower)*buffmod*targetmod)
-		if spell == L["Prayer of Healing"] then
+		if spell == PRAYER_OF_HEALING then
 			local targets = {UnitName("player")}
 			local targetsstring = UnitName("player").."/"
 			for i=1,4 do
@@ -1451,7 +1488,7 @@ function HealComm:SPELLCAST_INTERRUPTED()
 	end
 
 	if self.Spells[self.spellIsCasting] then
-		if self.spellIsCasting == L["Prayer of Healing"] then
+		if self.spellIsCasting == PRAYER_OF_HEALING then
 			self:SendAddonMessage("GrpHealstop")
 			self:stopGrpHeal(UnitName("player"))
 		else
@@ -1475,7 +1512,7 @@ function HealComm:SPELLCAST_FAILED()
 end
 
 function HealComm:SPELLCAST_DELAYED()
-	if self.spellIsCasting == L["Prayer of Healing"] then
+	if self.spellIsCasting == PRAYER_OF_HEALING then
 		self:SendAddonMessage("GrpHealdelay/"..arg1.."/")
 		self:delayGrpHeal(UnitName("player"), arg1)
 	else
@@ -1502,7 +1539,7 @@ function HealComm:SPELLCAST_STOP()
 	if not self.SpellCastInfo then return end
 	local targetUnit = roster:GetUnitIDFromName(self.SpellCastInfo[3])
 	if targetUnit then
-		if self.SpellCastInfo[1] == L["Renew"] then
+		if self.SpellCastInfo[1] == RENEW then
 			local dur = getSetBonus() and 18 or 15
 			self:SendAddonMessage("Renew/"..self.SpellCastInfo[3].."/"..dur.."/")
 			if not self.Hots[self.SpellCastInfo[3]] then
@@ -1514,7 +1551,7 @@ function HealComm:SPELLCAST_STOP()
 			self.Hots[self.SpellCastInfo[3]]["Renew"].start = GetTime()
 			self.Hots[self.SpellCastInfo[3]]["Renew"].dur = dur
 			self:TriggerEvent("HealComm_Hotupdate", targetUnit, "Renew")
-		elseif self.SpellCastInfo[1] == L["Rejuvenation"] then
+		elseif self.SpellCastInfo[1] == REJUVENATION then
 			local dur = getSetBonus() and 15 or 12
 			self:SendAddonMessage("Reju/"..self.SpellCastInfo[3].."/"..dur.."/")
 			if not self.Hots[self.SpellCastInfo[3]] then
@@ -1526,7 +1563,7 @@ function HealComm:SPELLCAST_STOP()
 			self.Hots[self.SpellCastInfo[3]]["Reju"].start = GetTime()
 			self.Hots[self.SpellCastInfo[3]]["Reju"].dur = dur
 			self:TriggerEvent("HealComm_Hotupdate", targetUnit, "Rejuvenation")
-		elseif self.SpellCastInfo[1] == L["Regrowth"] then
+		elseif self.SpellCastInfo[1] == REGROWTH then
 			self.savetarget = self.SpellCastInfo[3]
 			self:ScheduleEvent("TriggerRegrowthHot", self.TriggerRegrowthHot, 0.3, self)
 		end
@@ -1604,9 +1641,9 @@ function HealComm:UNIT_AURA()
 			end
 			healcommTip:ClearLines()
 			healcommTip:SetUnitBuff(arg1,i)
-			regr = regr or healcommTipTextLeft1:GetText() == L["Regrowth"]
-			reju = reju or healcommTipTextLeft1:GetText() == L["Rejuvenation"]
-			renew = renew or healcommTipTextLeft1:GetText() == L["Renew"]
+			regr = regr or healcommTipTextLeft1:GetText() == REGROWTH
+			reju = reju or healcommTipTextLeft1:GetText() == REJUVENATION
+			renew = renew or healcommTipTextLeft1:GetText() == RENEW
 		end
 		if not regr then
 			self.Hots[name]["Regr"] = nil
