@@ -36,6 +36,7 @@ L:RegisterTranslations("enUS", function() return {
 	["Totem of Sustaining"] = true,
 	["^Corpse of (.+)$"] = true,
 	["Holy Light"] = true,
+    ["Holy Shock"] = true,
 	["Flash of Light"] = true,
 	["Lesser Heal"] = true,
 	["Heal"] = true,
@@ -474,6 +475,7 @@ local PRAYER_OF_HEALING = L["Prayer of Healing"]
 
 -- PALADINS
 local HOLY_LIGHT = L["Holy Light"]
+local HOLY_SHOCK = L["Holy Shock"]
 local FLASH_OF_LIGHT = L["Flash of Light"]
 
 local LIBRAM_OF_LIGHT = L["Libram of Light"]
@@ -1315,11 +1317,13 @@ function HealComm:GetUnitSpellPower(unit, spell)
 		end
 		buffName = healcommTipTextLeft1:GetText()
 		if buffName == BLESSING_OF_LIGHT then
-            local HLBonus, FoLBonus = getMemoizedPaladinBlessingOfLightHealingBonuses()
+            local HLBonus, FoLBonus, HShockBonus = getMemoizedPaladinBlessingOfLightHealingBonuses()
 			if (spell == FLASH_OF_LIGHT) then
 				targetpower = FoLBonus + targetpower
 			elseif spell == HOLY_LIGHT then
 				targetpower = HLBonus + targetpower
+            elseif spell == HOLY_SHOCK then
+                targetpower = HShockBonus + targetpower
 			end
 		end
 		if buffName == HEALING_WAY and spell == HEALING_WAVE then
