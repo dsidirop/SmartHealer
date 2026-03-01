@@ -92,7 +92,7 @@ function SmartHealer:OnEnable()
     end
 
     if pfUIQuickCast and pfUIQuickCast.OnHeal then
-        self:Hook(pfUIQuickCast, "OnHeal", "pfUIQuickCast_OnHeal")
+        self:Hook(pfUIQuickCast, "OnHeal", "pfUIQuickCast_OnHeal") -- wires up our interceptor SmartHealer:pfUIQuickCast_OnHeal()
 
         _pfUIQuickCast_OnHeal_orig = self.hooks[pfUIQuickCast]["OnHeal"]
     end
@@ -857,7 +857,11 @@ function SmartHealer:tryGetOptimalSpell(spellNameRaw, explicitlySpecifiedRank, i
     return rankedSpell, rankedSpellId, spellBookType
 end
 
-function SmartHealer:pfUIQuickCast_OnHeal(spell, spellId, spellBookType, proper_target)
+--- Interceptor for the vanilla pfUIQuickCast.OnHeal()
+---
+--- This is where we deduce the optimal spell rank for the /pfquickcast:heal* family of commands
+---
+function SmartHealer:pfUIQuickCast_OnHeal(spell, spellId, spellBookType, proper_target, intention_is_focus_cast, future_arg1, future_arg2, future_arg3, future_arg4, future_arg5)
     local spellNameRaw, explicitlySpecifiedRank = libSC:GetRanklessSpellName(spell)
 
     local rankedSpell, rankedSpellId, rankedSpellBookType = self:tryGetOptimalSpell(
@@ -870,6 +874,12 @@ function SmartHealer:pfUIQuickCast_OnHeal(spell, spellId, spellBookType, proper_
             rankedSpell or spell,
             rankedSpellId or spellId,
             rankedSpellBookType or spellBookType,
-            proper_target
+            proper_target,
+            intention_is_focus_cast,
+            future_arg1, -- just to be sure we wont miss
+            future_arg2, -- out on any future arguments
+            future_arg3, -- we can set explicit names for
+            future_arg4, -- these when and if they will be added to the pfUIQuickCast:heal* API while
+            future_arg5 --  in the meantime the addon will work just fine without the need for a new release
     )
 end

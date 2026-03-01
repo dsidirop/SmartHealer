@@ -23,6 +23,7 @@ local L = AceLibrary("AceLocale-2.2"):new("HealComm-1.0")
 local HealComm = {}
 local has_superwow = SetAutoloot and true or false
 local player_guid
+
 ------------------------------------------------
 -- Locales
 ------------------------------------------------
