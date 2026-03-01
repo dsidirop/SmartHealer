@@ -1245,7 +1245,24 @@ HealComm.Debuffs = {
 	[L["Blood Fury"]] = {amount = 0, mod = 0.5, icon = "Interface\\Icons\\Ability_Rogue_FeignDeath"};
 	[L["Necrotic Aura"]] = {amount = 0, mod = 1, icon = "Interface\\Icons\\Ability_Creature_Disease_05"}
 }
-	
+
+local PaladinBoLBonuses_HolyLight --  holy light bonus
+local PaladinBoLBonuses_HolyShock --  holy shock bonus   specific to twow
+local PaladinBoLBonuses_FlashOfLight -- flash of light bonus
+local function getMemoizedPaladinBlessingOfLightHealingBonuses()
+    if PaladinBoLBonuses_HolyLight ~= nil then -- already parsed once   the bonuses from the buff dont ever change so no need to reparse them every time
+        return PaladinBoLBonuses_HolyLight, PaladinBoLBonuses_FlashOfLight, PaladinBoLBonuses_HolyShock
+    end
+
+    local HLBonus, FoLBonus, HSBonus = strmatch(healcommTipTextLeft2:GetText(),"(%d+)[^%d]+(%d*)[^%d]+(%d*)")
+
+    PaladinBoLBonuses_HolyLight = tonumber(HLBonus) or 0
+    PaladinBoLBonuses_FlashOfLight = tonumber(FoLBonus) or 0
+    PaladinBoLBonuses_HolyShock = tonumber(HSBonus) or 0
+
+    return PaladinBoLBonuses_HolyLight, PaladinBoLBonuses_FlashOfLight, PaladinBoLBonuses_HolyShock
+end
+
 local function getSetBonus()
 	healcommTip:SetInventoryItem("player", 1)
 	local text = getglobal("healcommTipTextLeft"..(healcommTip:NumLines() or 1))
@@ -1298,7 +1315,7 @@ function HealComm:GetUnitSpellPower(unit, spell)
 		end
 		buffName = healcommTipTextLeft1:GetText()
 		if buffName == BLESSING_OF_LIGHT then
-			local HLBonus, FoLBonus = strmatch(healcommTipTextLeft2:GetText(),"(%d+).-(%d+)")
+            local HLBonus, FoLBonus = getMemoizedPaladinBlessingOfLightHealingBonuses()
 			if (spell == FLASH_OF_LIGHT) then
 				targetpower = FoLBonus + targetpower
 			elseif spell == HOLY_LIGHT then
