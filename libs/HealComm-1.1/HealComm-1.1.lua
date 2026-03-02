@@ -1,14 +1,14 @@
 --[[
-Name: HealComm-1.0
-Revision: $Rev: 11732 $
+Name: HealComm-1.1
+Revision: $Rev: 11733 $
 Author(s): aviana
 Website: https://github.com/Aviana
 Description: A library to provide communication of heals and resurrections.
 Dependencies: AceLibrary, AceEvent-2.0, RosterLib-2.0, ItemBonusLib-1.0
 ]]
 
-local MAJOR_VERSION = "HealComm-1.0"
-local MINOR_VERSION = "$Revision: 14732 $"
+local MAJOR_VERSION = "HealComm-1.1"
+local MINOR_VERSION = "$Revision: 14733 $"
 
 if not AceLibrary then error(MAJOR_VERSION .. " requires AceLibrary") end
 if not AceLibrary:IsNewVersion(MAJOR_VERSION, MINOR_VERSION) then return end

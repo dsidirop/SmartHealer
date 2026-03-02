@@ -1,7 +1,25 @@
 --Original idea of this addon is based on Ogrisch's LazySpell
 
+local MAJOR_VERSION = "SmartHealer-1.2"
+local MINOR_VERSION = "$Revision: 100 $"
+
+-- This ensures the code is only executed if the libary doesn't already exist, or is a newer version
+if not AceLibrary then error(MAJOR_VERSION .. " requires AceLibrary") end
+if not AceLibrary:IsNewVersion(MAJOR_VERSION, MINOR_VERSION) then return end
+
+if not AceLibrary:HasInstance("AceDB-2.0") then error(MAJOR_VERSION .. " requires AceDB-2.0") end
+if not AceLibrary:HasInstance("AceHook-2.1") then error(MAJOR_VERSION .. " requires AceHook-2.1") end
+if not AceLibrary:HasInstance("AceAddon-2.0") then error(MAJOR_VERSION .. " requires AceAddon-2.0") end
+if not AceLibrary:HasInstance("AceConsole-2.0") then error(MAJOR_VERSION .. " requires AceConsole-2.0") end
+
+if not AceLibrary:HasInstance("HealComm-1.1") then error(MAJOR_VERSION .. " requires HealComm-1.1") end
+if not AceLibrary:HasInstance("SpellCache-1.0") then error(MAJOR_VERSION .. " requires SpellCache-1.0") end
+if not AceLibrary:HasInstance("ItemBonusLib-1.0") then error(MAJOR_VERSION .. " requires ItemBonusLib-1.0") end
+
 SmartHealer = AceLibrary("AceAddon-2.0"):new("AceHook-2.1", "AceConsole-2.0", "AceDB-2.0")
+
 SmartHealer:RegisterDB("SmartHealerDB")
+
 SmartHealer:RegisterDefaults("account", {
     overheal = 1,
 
@@ -30,7 +48,7 @@ SmartHealer:RegisterDefaults("account", {
     },
 })
 
-local libHC = AceLibrary("HealComm-1.0")
+local libHC = AceLibrary("HealComm-1.1")
 local libIB = AceLibrary("ItemBonusLib-1.0")
 local libSC = AceLibrary("SpellCache-1.0")
 
@@ -889,3 +907,5 @@ function SmartHealer:pfUIQuickCast_OnHeal(spell, spell_id, spell_book_type, prop
             future_arg5 --  in the meantime the addon will work just fine without the need for a new release
     )
 end
+
+AceLibrary:Register(SmartHealer, MAJOR_VERSION, MINOR_VERSION)
