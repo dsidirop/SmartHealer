@@ -908,4 +908,4 @@ function SmartHealer:pfUIQuickCast_OnHeal(spell, spell_id, spell_book_type, prop
     )
 end
 
-AceLibrary:Register(SmartHealer, MAJOR_VERSION, MINOR_VERSION)
+-- AceLibrary:Register(SmartHealer, MAJOR_VERSION, MINOR_VERSION) -- dont    it messes up SmartHealer as a global symbol
