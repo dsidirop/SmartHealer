@@ -21,10 +21,10 @@ local _smartHealer = AceLibrary("AceAddon-2.0"):new("AceHook-2.1", "AceConsole-2
 _smartHealer:RegisterDB("SmartHealerDB")
 
 _smartHealer:RegisterDefaults("account", {
-    overheal = 1,
+    overheal = 1, -- means heal exactly the missing_hp and only that   (btw should have been called missing_hp_percentage_multiplier)
 
-    minimumOverheal = 0.6,
-    maximumOverheal = 2.2,
+    minimumOverheal = 0.1, -- means healing only 20% of the missing_hp
+    maximumOverheal = 2.2, -- means overheal the missing_hp by 120% (by healing 220% of the missing_hp)
 
     interpretSpellRanksAsMaxNotMin = true,
 
