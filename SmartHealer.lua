@@ -623,7 +623,7 @@ function _smartHealer:GetOptimalRank(spell, unit, possibleExplicitOverheal)
 
     local rank = max_rank
     local overheal = possibleExplicitOverheal
-    if not overheal then
+    if overheal == nil then
         overheal = self:GetProperOverhealingForPlayer(UnitName(unit))
     end
 
