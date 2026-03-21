@@ -1359,19 +1359,20 @@ end
 function HealComm:UNIT_CASTEVENT(caster,target,action,spell_id,cast_time)
 	if caster ~= player_guid then return end
 	if action == "MAINHAND" or action == "OFFHAND" then return end
-
+   
 	local spellName, rank = SpellInfo(spell_id)
-	_,_,rank = string.find(rank,"(%d+)")
+	if not spellName or not (self.Spells[spellName] or Resurrections[spellName] or Hots[spellName]) then return end
 
-	if not (self.Spells[spellName] or Resurrections[spellName] or Hots[spellName]) then return end
+    _,_,rank = string.find(rank or "","(%d+)")
+    if rank == nil then rank = 1 end
 
-	self.CurrentSpellName = spellName
+    self.CurrentSpellName = spellName
 	self.CurrentSpellRank = rank
 	self:ProcessSpellCast(target)
 
 	if action == "START" then
 		self:SPELLCAST_START(spellName,cast_time)
-	elseif action== "CAST" then
+	elseif action == "CAST" then
 		self:SPELLCAST_STOP()
 	end
 end
