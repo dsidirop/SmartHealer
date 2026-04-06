@@ -262,7 +262,7 @@ end
 
 function _smartHealer:getUnitIdFromMouseHoverOverPartyOrRaidMember()
     local frame = GetMouseFocus()
-    if frame.label and frame.id then
+    if frame and frame.label and frame.id then
         return frame.label .. frame.id
     end
 
